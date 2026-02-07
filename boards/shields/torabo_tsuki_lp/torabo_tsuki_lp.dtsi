@@ -5,16 +5,7 @@
 #include <dt-bindings/zmk/input_transform.h> 
 
 / {
-    /* オートマウスの挙動を制御するカスタム・ビヘイビア 
-    behaviors {
-        auto_mouse_en: auto_mouse_en {
-            compatible = "zmk,behavior-auto-layer";
-            #binding-cells = <1>;
-            continue-list = <MKP_LCLK MKP_RCLK MKP_MCLK>; // これらのキーを押している間はレイヤーを維持
-            timeout-ms = <1000>; // 1秒間操作がないと元のレイヤーに戻る
-        };
-    };
-*/
+
     chosen {
         zmk,physical-layout = &physical_layout_l;
         zmk,kscan = &kscan0;
@@ -99,36 +90,26 @@
         compatible = "zmk,cdc-acm-bootloader-trigger";
     };
 
-    /* 
-       カスタムInput Processorの定義
-       注意: 名前を 'zip_temp_layer' にすると標準機能と衝突するので 'custom_auto_layer' に変更
-    */
-    custom_auto_layer: custom_auto_layer {
+    custom_aml: custom_aml {
         compatible = "zmk,input-processor-temp-layer";
         #input-processor-cells = <2>;
-        #binding-cells = <1>;
         require-prior-idle-ms = <200>;
     };
 
-    /* トラックボールの設定を一箇所にまとめる */
-    trackball_listener: trackball_listener {
+    trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* 
-           デフォルト動作: 
-           カーソル移動 + 自動レイヤー切り替え(レイヤー1へ, タイムアウト3000ms)
-           ※ 必要なければこの input-processors の行を削除してください
-        */
+        /* 通常モード (レイヤー0) */
         default_mode {
             layers = <0>;
-            input-processors = <&custom_auto_layer 1 3000>;
+            input-processors = <
+                &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+                &custom_aml 1 2000
+            >;
         };
 
-        /* 
-           スクロールモード:
-           レイヤー7が有効な時、XY移動をスクロールに変換する
-        */
+        /* スクロールモード (レイヤー7) */
         scroller {
             layers = <7>;
             input-processors = <
@@ -137,7 +118,8 @@
             >;
         };
     };
-    vbatt: vbatt {
+
+vbatt: vbatt {
         // Disable default battery monitoring
         status = "disabled";
     };
