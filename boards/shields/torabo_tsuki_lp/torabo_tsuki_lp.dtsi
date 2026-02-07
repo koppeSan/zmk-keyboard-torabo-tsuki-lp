@@ -3,7 +3,7 @@
 #include "torabo_tsuki_lp_layouts.dtsi"
 
 / {
-    /* オートマウスの挙動を制御するカスタム・ビヘイビア */
+    /* オートマウスの挙動を制御するカスタム・ビヘイビア 
     behaviors {
         auto_mouse_en: auto_mouse_en {
             compatible = "zmk,behavior-auto-layer";
@@ -12,6 +12,7 @@
             timeout-ms = <1000>; // 1秒間操作がないと元のレイヤーに戻る
         };
     };
+*/
     chosen {
         zmk,physical-layout = &physical_layout_l;
         zmk,kscan = &kscan0;
@@ -99,7 +100,7 @@
     trackball_listener: trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        bindings = <&auto_mouse_en 1>; 
+    /* bindings = <&auto_mouse_en 1>; */
     };
 
     vbatt: vbatt {
