@@ -120,7 +120,7 @@
            ※ 必要なければこの input-processors の行を削除してください
         */
         default_mode {
-             input-processors = <&custom_auto_layer 1 3000>;
+             input-processors = <&custom_auto_layer 2 3000>;
         };
 
         /* 
