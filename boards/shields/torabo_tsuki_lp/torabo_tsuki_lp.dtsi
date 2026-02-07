@@ -2,7 +2,6 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 #include "torabo_tsuki_lp_layouts.dtsi"
 #include <input/processors.dtsi>
-#include <zmk/input-processor/xy-to-scroll-mapper.h>
 
 / {
     /* オートマウスの挙動を制御するカスタム・ビヘイビア 
