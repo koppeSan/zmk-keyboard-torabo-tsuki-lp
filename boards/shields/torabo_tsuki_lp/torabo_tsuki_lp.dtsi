@@ -105,7 +105,7 @@
     */
     custom_auto_layer: custom_auto_layer {
         compatible = "zmk,input-processor-temp-layer";
-        #binding-cells = <2>;
+        #binding-cells = <1>;
         require-prior-idle-ms = <200>;
     };
 
