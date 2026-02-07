@@ -1,4 +1,5 @@
 #include <zephyr/dt-bindings/gpio/nordic-nrf-gpio.h>
+#include <dt-bindings/zmk/input_transform.h>
 #include <dt-bindings/zmk/matrix_transform.h>
 #include "torabo_tsuki_lp_layouts.dtsi"
 
@@ -87,10 +88,28 @@
         compatible = "zmk,cdc-acm-bootloader-trigger";
     };
 
-    trackball_listener: trackball_listener {
-        compatible = "zmk,input-listener";
-        device = <&trackball>;
+  trackball_listener: trackball_listener {
+    status = "okay";
+    compatible = "zmk,input-behavior-listener"; /* ここが変更点 */
+    device = <&trackball>;
+    layers = <0>;  /* デフォルトレイヤー */
+    evt-type = <INPUT_EV_REL>;
+    x-input-code = <INPUT_REL_X>;
+    y-input-code = <INPUT_REL_Y>;
+    scale-multiplier = <1>;
+    scale-divisor = <1>;
+    
+    /* レイヤー6 (Scroll_L) が有効な時の挙動定義 */
+    /* 注意: レイヤー番号は Boss のキーマップに合わせて変更せよ */
+    scroller {
+        layers = <6>; /* Scroll Layer ID */
+        evt-type = <INPUT_EV_REL>;
+        x-input-code = <INPUT_REL_HWHEEL>; /* 横スクロール */
+        y-input-code = <INPUT_REL_WHEEL>;  /* 縦スクロール */
+        y-invert; /* 必要なら反転 */
+        bindings = <&ib_wheel_scaler 1 20>; /* スクロール感度調整 */
     };
+};
 
     vbatt: vbatt {
         // Disable default battery monitoring
