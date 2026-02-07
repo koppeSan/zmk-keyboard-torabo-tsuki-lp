@@ -176,6 +176,7 @@
         irq-gpios = <&gpio0 19 GPIO_ACTIVE_LOW>;
         power-gpios = <&gpio0 8 (GPIO_ACTIVE_HIGH | NRF_GPIO_DRIVE_H1)>;
     };
+};
 &trackball_listener {
   scroller {
     layers = <6>;
@@ -184,5 +185,4 @@
       &zip_scroll_transform INPUT_TRANSFORM_XY_SWAP  // X/Y入れ替え
     >;
   };
-};
 };
