@@ -19,10 +19,13 @@
         ib_wheel_scaler: ib_wheel_scaler {
             compatible = "zmk,input-processor-scaler";
             #input-processor-cells = <2>;
+            type = <INPUT_EV_REL>; /* 【修正】必須プロパティを追加 */
+            codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>; /* 念のため対象コードも明示 */
+            track-remainders; /* 余りを追跡してスムーズにする */
         };
     };
 
-    /* マトリックス変換定義 (変更なし) */
+    /* マトリックス変換定義 */
     size_s_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <14>;
