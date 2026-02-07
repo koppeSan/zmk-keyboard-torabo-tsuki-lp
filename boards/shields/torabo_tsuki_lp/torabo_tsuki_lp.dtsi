@@ -10,6 +10,10 @@
         zmk,battery = &non_lipo_battery;
     };
 
+    /* (Matrix Transforms Omitted for Brevity - They remain unchanged) */
+    /* Boss、ここには元のファイルにある size_s_transform などをそのまま残してくれ */
+    /* 長くなるのでここでは省略するが、上書き時は消さないように注意だ */
+    
     size_s_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <14>;
@@ -49,7 +53,7 @@
 
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
-
+        /* GPIOs omitted for brevity - keep original */
         col-gpios
             = <&gpio0 22 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
             <&gpio1 15   (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
@@ -88,31 +92,32 @@
         compatible = "zmk,cdc-acm-bootloader-trigger";
     };
 
-  trackball_listener: trackball_listener {
-    status = "okay";
-    compatible = "zmk,input-behavior-listener"; /* ここが変更点 */
-    device = <&trackball>;
-    layers = <0>;  /* デフォルトレイヤー */
-    evt-type = <INPUT_EV_REL>;
-    x-input-code = <INPUT_REL_X>;
-    y-input-code = <INPUT_REL_Y>;
-    scale-multiplier = <1>;
-    scale-divisor = <1>;
-    
-    /* レイヤー6 (Scroll_L) が有効な時の挙動定義 */
-    /* 注意: レイヤー番号は Boss のキーマップに合わせて変更せよ */
-    scroller {
-        layers = <6>; /* Scroll Layer ID */
+    /* ------------------------------------------------ */
+    /* SCROLL FUNCTION ENABLED HERE */
+    /* ------------------------------------------------ */
+    trackball_listener: trackball_listener {
+        status = "okay";
+        compatible = "zmk,input-behavior-listener";
+        device = <&trackball>;
+        layers = <0>;
         evt-type = <INPUT_EV_REL>;
-        x-input-code = <INPUT_REL_HWHEEL>; /* 横スクロール */
-        y-input-code = <INPUT_REL_WHEEL>;  /* 縦スクロール */
-        y-invert; /* 必要なら反転 */
-        bindings = <&ib_wheel_scaler 1 20>; /* スクロール感度調整 */
+        x-input-code = <INPUT_REL_X>;
+        y-input-code = <INPUT_REL_Y>;
+        scale-multiplier = <1>;
+        scale-divisor = <1>;
+        
+        /* Layer 6 (scrollL) behavior */
+        scroller {
+            layers = <6>;
+            evt-type = <INPUT_EV_REL>;
+            x-input-code = <INPUT_REL_HWHEEL>;
+            y-input-code = <INPUT_REL_WHEEL>;
+            y-invert;
+            bindings = <&ib_wheel_scaler 1 20>;
+        };
     };
-};
 
     vbatt: vbatt {
-        // Disable default battery monitoring
         status = "disabled";
     };
     non_lipo_battery: non_lipo_battery {
@@ -121,20 +126,19 @@
     };
 };
 
+/* Physical layouts omitted for brevity - keep original */
 &physical_layout_s {
     compatible = "zmk,physical-layout";
     display-name = "S Layout";
     kscan = <&kscan0>;
     transform = <&size_s_transform>;
 };
-
 &physical_layout_m {
     compatible = "zmk,physical-layout";
     display-name = "M Layout";
     kscan = <&kscan0>;
     transform = <&size_m_transform>;
 };
-
 &physical_layout_l {
     compatible = "zmk,physical-layout";
     display-name = "L Layout";
