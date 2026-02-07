@@ -9,6 +9,7 @@
 };
 
 /* スクロールモードの定義 */
+
 &msc {
     acceleration-exponent = <1>;      // 加速設定
     time-to-max-speed-ms = <400>;     // 最高速までの時間
@@ -99,6 +100,16 @@
 &trans  &kp LS(EXCL)  &kp SINGLE_QUOTE  &kp RIGHT_BRACE  &kp RIGHT_PARENTHESIS  &kp RIGHT_BRACKET  &trans  &trans     &kp PLUS         &kp DOLLAR     &kp PERCENT   &kp CARET             &kp UNDERSCORE         &trans
 &trans  &kp LCTRL     &kp AT            &kp BACKSLASH    &kp COLON              &kp TILDE          &trans  &kp KP_N0  &mt ENTER EQUAL  &kp EXCL       &kp AT        &kp HASH              &kp PIPE               &trans
 &trans  &trans        &trans            &trans           &trans                 &trans             &trans  &trans     &kp BACKSPACE    &trans         &trans        &kp TILDE             &kp ASTERISK           &trans
+            >;
+        };
+
+        scrollL {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
     };
