@@ -2,6 +2,7 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 #include "torabo_tsuki_lp_layouts.dtsi"
 #include <input/processors.dtsi>
+#include <dt-bindings/zmk/input_transform.h> 
 
 / {
     /* オートマウスの挙動を制御するカスタム・ビヘイビア 
