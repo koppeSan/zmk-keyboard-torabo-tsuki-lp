@@ -9,9 +9,9 @@
 };
 
 &msc {
-    acceleration-exponent = <1>;      // 加速設定
-    time-to-max-speed-ms = <400>;     // 最高速までの時間
-    delay-ms = <0>;                   // 遅延
+    acceleration-exponent = <1>;
+    time-to-max-speed-ms = <400>;
+    delay-ms = <0>;
 };
 
 / {
