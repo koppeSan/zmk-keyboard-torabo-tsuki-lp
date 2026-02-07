@@ -1,6 +1,8 @@
 #include <zephyr/dt-bindings/gpio/nordic-nrf-gpio.h>
 #include <dt-bindings/zmk/matrix_transform.h>
 #include "torabo_tsuki_lp_layouts.dtsi"
+#include <dt-bindings/zmk/input-processor.h>
+#include <zmk/input-processor/xy-to-scroll-mapper.h>
 
 / {
     /* オートマウスの挙動を制御するカスタム・ビヘイビア 
@@ -175,4 +177,13 @@
         irq-gpios = <&gpio0 19 GPIO_ACTIVE_LOW>;
         power-gpios = <&gpio0 8 (GPIO_ACTIVE_HIGH | NRF_GPIO_DRIVE_H1)>;
     };
+&trackball_listener {
+  scroller {
+    layers = <1>;
+    input-processors = <
+      &zip_xy_to_scroll_mapper
+      &zip_scroll_transform INPUT_TRANSFORM_XY_SWAP  // X/Y入れ替え
+    >;
+  };
+};
 };
