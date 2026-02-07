@@ -99,17 +99,41 @@
         compatible = "zmk,cdc-acm-bootloader-trigger";
     };
 
+    /* 
+       カスタムInput Processorの定義
+       注意: 名前を 'zip_temp_layer' にすると標準機能と衝突するので 'custom_auto_layer' に変更
+    */
+    custom_auto_layer: custom_auto_layer {
+        compatible = "zmk,input-processor-temp-layer";
+        #binding-cells = <2>;
+        require-prior-idle-ms = <200>;
+    };
+
+    /* トラックボールの設定を一箇所にまとめる */
     trackball_listener: trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        input-processors = <&zip_temp_layer 1 3000>;
-        
-    /* bindings = <&auto_mouse_en 1>; */
-    };
-    zip_temp_layer {
-        compatible = "zmk,input-processor-temp-layer";
-        // excluded-positions = <18 19 21 34>;  // J,K,;,Ctrl以外で即解除
-        require-prior-idle-ms = <200>;  // キー入力後200ms禁止
+
+        /* 
+           デフォルト動作: 
+           カーソル移動 + 自動レイヤー切り替え(レイヤー1へ, タイムアウト3000ms)
+           ※ 必要なければこの input-processors の行を削除してください
+        */
+        default_mode {
+             input-processors = <&custom_auto_layer 1 3000>;
+        };
+
+        /* 
+           スクロールモード:
+           レイヤー7が有効な時、XY移動をスクロールに変換する
+        */
+        scroller {
+            layers = <7>;
+            input-processors = <
+                &zip_xy_to_scroll_mapper
+                &zip_scroll_transform INPUT_TRANSFORM_XY_SWAP
+            >;
+        };
     };
     vbatt: vbatt {
         // Disable default battery monitoring
@@ -177,13 +201,4 @@
         irq-gpios = <&gpio0 19 GPIO_ACTIVE_LOW>;
         power-gpios = <&gpio0 8 (GPIO_ACTIVE_HIGH | NRF_GPIO_DRIVE_H1)>;
     };
-};
-&trackball_listener {
-  scroller {
-    layers = <6>;
-    input-processors = <
-      &zip_xy_to_scroll_mapper
-      &zip_scroll_transform INPUT_TRANSFORM_XY_SWAP  // X/Y入れ替え
-    >;
-  };
 };
