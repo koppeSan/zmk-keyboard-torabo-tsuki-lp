@@ -1,3 +1,4 @@
+/* koppesan/zmk-keyboard-torabo-tsuki-lp/zmk-keyboard-torabo-tsuki-lp-ff21b2b1ee0f9cdfe2232c6254bb6c2c762c736b/boards/shields/torabo_tsuki_lp/torabo_tsuki_lp.dtsi */
 #include <zephyr/dt-bindings/gpio/nordic-nrf-gpio.h>
 #include <dt-bindings/zmk/input_transform.h>
 #include <dt-bindings/zmk/matrix_transform.h>
@@ -15,13 +16,14 @@
     /* スクロール感度調整用のプロセッサ */
     input_processors {
         compatible = "zmk,input-processor-container";
-        
         ib_wheel_scaler: ib_wheel_scaler {
             compatible = "zmk,input-processor-scaler";
             #input-processor-cells = <2>;
             type = <INPUT_EV_REL>; /* 【修正】必須プロパティを追加 */
-            codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>; /* 念のため対象コードも明示 */
-            track-remainders; /* 余りを追跡してスムーズにする */
+            codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>;
+            /* 念のため対象コードも明示 */
+            track-remainders;
+            /* 余りを追跡してスムーズにする */
         };
     };
 
@@ -113,14 +115,22 @@
         scale-multiplier = <1>;
         scale-divisor = <1>;
         
+        /* 【修正】scrollerノードはbindingsにプロセッサを指定しているため無効。
+           input-behavior-listenerのbindingsにはbehavior（&kp, &msc等）しか指定できない。
+           ビルドエラー回避のためコメントアウト。
+           スクロールを実現したい場合は、&msc SCRL_UP等をバインドするか、
+           カスタムCコードが必要。
+        */
+        /*
         scroller {
-            layers = <6>; /* レイヤー6 (scrollL) でスクロール化 */
+            layers = <6>;
             evt-type = <INPUT_EV_REL>;
             x-input-code = <INPUT_REL_HWHEEL>;
             y-input-code = <INPUT_REL_WHEEL>;
             y-invert;
-            bindings = <&ib_wheel_scaler 1 20>;
+            bindings = <&ib_wheel_scaler 1 20>; 
         };
+        */
     };
 
     vbatt: vbatt {
