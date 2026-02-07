@@ -30,5 +30,8 @@ manifest:
     - name: zmk-input-behavior-listener
       remote: badjeff
       revision: main
+    - name: zmk-input-processors-xy-to-scroll-mapper
+      remote: zmkfirmware
+      revision: main
   self:
     path: config
