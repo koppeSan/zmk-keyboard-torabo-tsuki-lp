@@ -66,7 +66,7 @@
 &trans  &trans        &trans        &trans        &trans        &trans                               &trans           &trans  &trans  &trans        &trans        &trans
 &trans  &kp TILDE     &kp JP_SQT    &kp JP_LBRC   &kp JP_RBRC   &kp JP_SEMI                          &kp TAB          &kp N7  &kp N8  &kp N9        &kp JP_ASTRK  &trans
 &trans  &kp JP_EXCL   &kp JP_DQT    &kp JP_LPAR   &kp JP_RPAR   &kp JP_COLON  &trans      &trans     &kp JP_PLUS      &kp N4  &kp N5  &kp N6        &kp JP_MINUS  &trans
-&trans  &kp JP_QMARK  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_LBKT   &kp JP_YEN    &trans      &kp N0     &mt JP_EQUAL N0  &kp N1  &kp N2  &kp N3        &kp JP_SLASH  &trans
+&trans  &kp JP_QMARK  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_RBKT   &kp JP_YEN    &trans      &kp N0     &mt JP_EQUAL N0  &kp N1  &kp N2  &kp N3        &kp JP_SLASH  &trans
 &trans  &trans        &trans        &trans        &trans        &mo 6         &kp LCTRL   &trans     &kp BACKSPACE    &trans  &trans  &kp JP_CARET  &kp JP_PIPE   &trans
             >;
         };
@@ -96,7 +96,7 @@
 &trans  &trans        &trans        &trans        &trans       &trans                           &trans              &trans       &trans        &trans        &trans        &trans
 &trans  &kp JP_TILDE  &kp JP_AT     &kp JP_LBRC   &kp JP_RBRC   &kp JP_SEMI                     &kp JP_CARET        &kp JP_AMPS  &kp JP_ASTRK  &kp JP_LPAR   &kp JP_CARET  &trans
 &trans  &kp JP_EXCL   &kp JP_SQT    &kp JP_LPAR   &kp JP_RPAR   &kp JP_COLON &trans  &trans     &kp JP_PLUS         &kp JP_DLLR  &kp JP_PRCNT  &kp JP_CARET  &kp JP_UNDER  &trans
-&trans  &kp JP_CARET  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_LBKT   &kp JP_BSLH  &trans  &kp KP_N0  &mt ENTER JP_EQUAL  &kp JP_EXCL  &kp JP_AT     &kp JP_HASH   &kp JP_PRCNT  &trans
+&trans  &kp JP_CARET  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_RBKT   &kp JP_BSLH  &trans  &kp KP_N0  &mt ENTER JP_EQUAL  &kp JP_EXCL  &kp JP_AT     &kp JP_HASH   &kp JP_PRCNT  &trans
 &trans  &trans        &trans        &trans       &trans       &trans         &trans  &trans     &kp BACKSPACE       &trans       &trans        &kp JP_TILDE  &kp JP_PIPE   &trans
             >;
         };
