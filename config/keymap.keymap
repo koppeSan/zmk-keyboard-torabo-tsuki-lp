@@ -49,6 +49,7 @@
                 , <&macro_press &kp LALT>;   // 再びAltを押し直す
         };
 
+ 
         // Kキー（Ctrl+Shift+Tab）用マクロ
         tab_prev: tab_prev {
             compatible = "zmk,behavior-macro";
