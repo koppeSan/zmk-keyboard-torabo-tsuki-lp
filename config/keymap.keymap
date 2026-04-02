@@ -28,18 +28,44 @@
     
     macros {
         // Lキー専用マクロ：レイヤー8への切り替えとAlt保持を同時に行う
+        l_nav: l_nav {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <0>;
+            bindings
+                = <&macro_press &mo 8 &kp LALT>
+                , <&macro_pause_for_release>
+                , <&macro_release &mo 8 &kp LALT>;
+        };
 
+        // Jキー（Ctrl+Tab）用マクロ
+        tab_next: tab_next {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_release &kp LALT>
+                , <&kp LC(TAB)>
+                , <&macro_press &kp LALT>;
+        };
+
+        // Kキー（Ctrl+Shift+Tab）用マクロ
+        tab_prev: tab_prev {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_release &kp LALT>
+                , <&kp LC(LS(TAB))>
+                , <&macro_press &kp LALT>;
+        };
     };
 
-    // ==========================================
-    // カスタム挙動の定義部屋（単打と長押しの分岐）
-    // ==========================================
     behaviors {
         ht_l_nav: hold_tap_l_nav {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "tap-preferred"; // タップ（単打）を優先
-            tapping-term-ms = <200>;  // 200ms長押しでマクロ発動
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
             bindings = <&l_nav>, <&kp>; 
         };
     };
@@ -50,11 +76,11 @@
         // Layer 0
         default {
             bindings = <
-&none  &none      &none        &none             &none        &none        &none              &none    &none        &none         &none                &none                  &none
-&none  &mt ESC Q  &kp W        &kp E             &kp R        &kp T        &kp Y              &kp U    &kp I        &kp O                &kp P                  &none
-&none  &kp A      &kp S        &kp D             &kp F        &kp G        &none              &none    &kp H        &lt 8 J  &kp K         &kp L        &lt 7 JP_MINUS         &none
-&none  &kp Z      &kp X        &kp C             &kp V        &kp B        &lt 5 PRINTSCREEN  &to 1    &kp N        &kp M    &kp JP_COMMA  &kp JP_DOT           &lt 1 JP_SLASH         &none
-&none  &lt 2 INT5 &lt 4 JP_AT  &mt LALT JP_ZKHK  &kp LEFT_GUI &mt LEFT_SHIFT INT4 &mt LCTRL SPACE      &lt 4 ENTER  &lt 3 BACKSPACE &none    &none         &mt ESCAPE JP_CARET  &mt RIGHT_ALT JP_SEMI  &none
+&none  &none      &none        &none             &none        &none                                          &none        &none    &none         &none                &none                  &none
+&none  &mt ESC Q  &kp W        &kp E             &kp R        &kp T                                          &kp Y        &kp U    &kp I         &kp O                &kp P                  &none
+&none  &kp A      &kp S        &kp D             &kp F        &kp G        &none              &none          &kp H        &lt 8 J  &kp K         &ht_l_nav 0 L        &lt 7 JP_MINUS         &none
+&none  &kp Z      &kp X        &kp C             &kp V        &kp B        &lt 5 PRINTSCREEN  &to 1          &kp N        &kp M    &kp JP_COMMA  &kp JP_DOT           &lt 1 JP_SLASH         &none
+&none  &lt 2 INT5 &lt 4 JP_AT  &mt LALT JP_ZKHK  &kp LEFT_GUI &mt LEFT_SHIFT INT4 &mt LCTRL SPACE &lt 4 ENTER  &lt 3 BACKSPACE &none    &none         &mt ESCAPE JP_CARET  &mt RIGHT_ALT JP_SEMI  &none
             >;
         };
 
@@ -86,9 +112,9 @@
             bindings = <
 &trans  &trans        &trans        &trans        &trans       &trans                                      &trans           &trans  &trans         &trans        &trans        &trans
 &trans  &kp TILDE     &kp JP_SQT    &kp JP_LBRC   &kp JP_RBRC  &kp JP_SEMI                                 &kp TAB          &kp N7  &kp N8         &kp N9        &kp JP_ASTRK  &trans
-&trans  &kp JP_EXCL   &kp JP_DQT    &kp JP_LPAR   &kp JP_RPAR  &kp JP_COLON  &trans     &trans  &kp JP_PLUS      &kp N4  &kp N5         &kp N6        &kp JP_MINUS  &trans
-&trans  &kp JP_QMARK  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_RBKT  &kp JP_YEN    &trans     &kp N0  &mt JP_EQUAL N0  &kp N1  &kp N2         &kp N3        &kp JP_SLASH  &trans
-&trans  &trans        &trans        &trans        &trans       &trans        &mo 6      &kp LCTRL &trans  &kp BACKSPACE    &trans  &trans         &kp JP_CARET  &kp JP_PIPE   &trans
+&trans  &kp JP_EXCL   &kp JP_DQT    &kp JP_LPAR   &kp JP_RPAR  &kp JP_COLON  &trans     &trans             &kp JP_PLUS      &kp N4  &kp N5         &kp N6        &kp JP_MINUS  &trans
+&trans  &kp JP_QMARK  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_RBKT  &kp JP_YEN    &trans     &kp N0             &mt JP_EQUAL N0  &kp N1  &kp N2         &kp N3        &kp JP_SLASH  &trans
+&trans  &trans        &trans        &trans        &trans       &trans        &mo 6      &kp LCTRL          &trans           &kp BACKSPACE &trans  &trans         &kp JP_CARET  &kp JP_PIPE   &trans
             >;
         };
 
@@ -108,9 +134,9 @@
             bindings = <
 &trans  &trans      &trans        &trans        &trans        &trans                                &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &bt BT_NXT  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3                          &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &bt BT_PRV  &bt BT_SEL 4  &bt BT_SEL 5  &bt BT_SEL 6  &bt BT_SEL 7  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans      &trans        &bt BT_CLR    &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans      &trans        &trans        &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &bt BT_PRV  &bt BT_SEL 4  &bt BT_SEL 5  &bt BT_SEL 6  &bt BT_SEL 7  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans        &bt BT_CLR    &trans        &trans        &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans        &trans        &trans        &trans        &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
 
@@ -119,13 +145,13 @@
             bindings = <
 &trans  &trans        &trans        &trans        &trans       &trans                                           &trans              &trans         &trans        &trans        &trans        &trans
 &trans  &kp JP_TILDE  &kp JP_AT     &kp JP_LBRC   &kp JP_RBRC  &kp JP_SEMI                                      &kp JP_CARET        &kp JP_AMPS    &kp JP_ASTRK  &kp JP_LPAR   &kp JP_CARET  &trans
-&trans  &kp JP_EXCL   &kp JP_SQT    &kp JP_LPAR   &kp JP_RPAR  &kp JP_COLON  &trans     &trans     &kp JP_PLUS          &kp JP_DLLR    &kp JP_PRCNT  &kp JP_CARET  &kp JP_UNDER  &trans
-&trans  &kp JP_CARET  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_RBKT  &kp JP_BSLH   &trans     &kp KP_N0  &mt ENTER JP_EQUAL   &kp JP_EXCL    &kp JP_AT     &kp JP_HASH   &kp JP_PRCNT  &trans
-&trans  &trans        &trans        &trans        &trans       &trans        &trans     &trans     &kp BACKSPACE        &trans         &trans        &kp JP_TILDE  &kp JP_PIPE   &trans
+&trans  &kp JP_EXCL   &kp JP_SQT    &kp JP_LPAR   &kp JP_RPAR  &kp JP_COLON  &trans     &trans                  &kp JP_PLUS         &kp JP_DLLR    &kp JP_PRCNT  &kp JP_CARET  &kp JP_UNDER  &trans
+&trans  &kp JP_CARET  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_RBKT  &kp JP_BSLH   &trans     &kp KP_N0               &mt ENTER JP_EQUAL  &kp JP_EXCL    &kp JP_AT     &kp JP_HASH   &kp JP_PRCNT  &trans
+&trans  &trans        &trans        &trans        &trans       &trans        &trans     &trans                  &kp BACKSPACE       &trans         &trans        &kp JP_TILDE  &kp JP_PIPE   &trans
             >;
         };
 
-        // Layer 7
+        // Layer 7 (Scroll Layer)
         scrollL {
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans       &trans           &trans  &trans  &trans
@@ -147,4 +173,13 @@
             >;
         };
     };
+};
+
+// ==========================================
+// ZMK Native Pointing APIによるLayer 7のスクロール化
+// ==========================================
+&trackball {
+    // trackballノードに対して、Layer 7がアクティブな時のみ
+    // マウスカーソル移動（MOVE）をスクロール（SCROLL）に切り替える処理を上書き
+    input-processors = <&zip_temp_layer 7 0>; 
 };
