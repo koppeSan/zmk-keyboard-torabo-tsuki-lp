@@ -177,3 +177,7 @@
         };
     };
 };
+&trackball {
+    status = "okay";
+    scroll-layers = <7>;
+};
