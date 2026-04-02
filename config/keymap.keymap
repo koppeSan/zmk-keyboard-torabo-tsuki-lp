@@ -25,29 +25,69 @@
             layers = <5>;
         };
     };
-
+    
     macros {
-        new_macro: new_macro {
+        // Lキー専用マクロ：レイヤー8への切り替えとAlt保持を同時に行う
+        l_nav: l_nav {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&none>;
-            label = "NEW_MACRO";
+            wait-ms = <0>;
+            tap-ms = <0>;
+            bindings
+                = <&macro_press &mo 8 &kp LALT> // Layer 8をオンにし、LALTを押しっぱなしにする
+                , <&macro_pause_for_release>    // Lキーが離されるまで待機
+                , <&macro_release &mo 8 &kp LALT>; // Lキーを離したら、Layer 8とLALTを解放
+        };
+
+        // Jキー（Ctrl+Tab）用マクロ：Altが干渉しないように一時的に解放する
+        tab_next: tab_next {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_release &kp LALT> // Altを一時的に離す
+                , <&kp LC(TAB)>             // Ctrl + Tabを打つ
+                , <&macro_press &kp LALT>;   // 再びAltを押し直す
+        };
+
+        // Kキー（Ctrl+Shift+Tab）用マクロ
+        tab_prev: tab_prev {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_release &kp LALT>
+                , <&kp LC(LS(TAB))>
+                , <&macro_press &kp LALT>;
+        };
+    };
+
+    // ==========================================
+    // カスタム挙動の定義部屋（単打と長押しの分岐）
+    // ==========================================
+    behaviors {
+        ht_l_nav: hold_tap_l_nav {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred"; // タップ（単打）を優先
+            tapping-term-ms = <200>;  // 200ms長押しでマクロ発動
+            bindings = <&l_nav>, <&kp>; 
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
+        // Layer 0
         default {
             bindings = <
-&none  &none       &none        &none             &none         &none                                                &none            &none    &none         &none                &none                  &none
-&none  &mt ESC Q   &kp W        &kp E             &kp R         &kp T                                                &kp Y            &kp U    &kp I         &kp O                &kp P                  &none
-&none  &kp A       &kp S        &kp D             &kp F         &kp G                &none              &none        &kp H            &lt 8 J  &kp K         &kp L                &lt 7 JP_MINUS         &none
-&none  &kp Z       &kp X        &kp C             &kp V         &kp B                &lt 5 PRINTSCREEN  &to 1        &kp N            &kp M    &kp JP_COMMA  &kp JP_DOT           &lt 1 JP_SLASH         &none
-&none  &lt 2 INT5  &lt 4 JP_AT  &mt LALT JP_RBKT  &kp LEFT_GUI  &mt LEFT_SHIFT INT4  &mt LCTRL SPACE    &lt 4 ENTER  &lt 3 BACKSPACE  &none    &none         &mt ESCAPE JP_CARET  &mt RIGHT_ALT JP_SEMI  &none
+&none  &none      &none        &none             &none        &none              &none                &none            &none    &none         &none                &none                  &none
+&none  &mt ESC Q  &kp W        &kp E             &kp R        &kp T              &kp Y                &kp U    &kp I         &kp O                &kp P                  &none
+&none  &kp A      &kp S        &kp D             &kp F        &kp G        &none              &none        &kp H            &lt 8 J  &kp K         &ht_l_nav 0 L        &lt 7 JP_MINUS         &none
+&none  &kp Z      &kp X        &kp C             &kp V        &kp B        &lt 5 PRINTSCREEN  &to 1        &kp N            &kp M    &kp JP_COMMA  &kp JP_DOT           &lt 1 JP_SLASH         &none
+&none  &lt 2 INT5 &lt 4 JP_AT  &mt LALT JP_RBKT  &kp LEFT_GUI &mt LEFT_SHIFT INT4 &mt LCTRL SPACE      &lt 4 ENTER  &lt 3 BACKSPACE &none    &none         &mt ESCAPE JP_CARET  &mt RIGHT_ALT JP_SEMI  &none
             >;
         };
 
+        // Layer 1
         Mouse {
             bindings = <
 &trans  &trans                            &trans         &trans         &trans                &trans                                &trans     &trans          &trans          &trans           &trans             &trans
@@ -56,10 +96,10 @@
 &trans  &kp C_PREVIOUS                    &none          &kp C_VOL_DN   &kp K_MUTE            &kp C_VOLUME_UP       &trans  &to 0   &mkp MB5   &mkp MB4        &msc SCRL_DOWN  &kp RIGHT        &trans             &trans
 &trans  &mt LEFT_SHIFT C_AL_TASK_MANAGER  &trans         &trans         &trans                &trans                &trans  &trans  &trans     &trans          &trans          &trans           &trans             &trans
             >;
-
             label = "mouse";
         };
 
+        // Layer 2
         DELKEY {
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans   &trans  &trans  &trans  &trans        &trans
@@ -70,46 +110,51 @@
             >;
         };
 
+        // Layer 3
         Num_Sym {
             bindings = <
-&trans  &trans        &trans        &trans       &trans       &trans                           &trans           &trans  &trans  &trans        &trans        &trans
-&trans  &kp TILDE     &kp JP_SQT    &kp JP_LBRC  &kp JP_RBRC  &kp JP_SEMI                      &kp TAB          &kp N7  &kp N8  &kp N9        &kp JP_ASTRK  &trans
-&trans  &kp JP_EXCL   &kp JP_DQT    &kp JP_LPAR  &kp JP_RPAR  &kp JP_COLON  &trans     &trans  &kp JP_PLUS      &kp N4  &kp N5  &kp N6        &kp JP_MINUS  &trans
-&trans  &kp JP_QMARK  &kp JP_GRAVE  &kp JP_LBKT  &kp JP_RBKT  &kp JP_YEN    &trans     &kp N0  &mt JP_EQUAL N0  &kp N1  &kp N2  &kp N3        &kp JP_SLASH  &trans
-&trans  &trans        &trans        &trans       &trans       &mo 6         &kp LCTRL  &trans  &kp BACKSPACE    &trans  &trans  &kp JP_CARET  &kp JP_PIPE   &trans
+&trans  &trans        &trans        &trans        &trans       &trans                                      &trans           &trans  &trans         &trans        &trans        &trans
+&trans  &kp TILDE     &kp JP_SQT    &kp JP_LBRC   &kp JP_RBRC  &kp JP_SEMI                                 &kp TAB          &kp N7  &kp N8         &kp N9        &kp JP_ASTRK  &trans
+&trans  &kp JP_EXCL   &kp JP_DQT    &kp JP_LPAR   &kp JP_RPAR  &kp JP_COLON  &trans     &trans  &kp JP_PLUS      &kp N4  &kp N5         &kp N6        &kp JP_MINUS  &trans
+&trans  &kp JP_QMARK  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_RBKT  &kp JP_YEN    &trans     &kp N0  &mt JP_EQUAL N0  &kp N1  &kp N2         &kp N3        &kp JP_SLASH  &trans
+&trans  &trans        &trans        &trans        &trans       &trans        &mo 6      &kp LCTRL &trans  &kp BACKSPACE    &trans  &trans         &kp JP_CARET  &kp JP_PIPE   &trans
             >;
         };
 
+        // Layer 4
         Func_Txt {
             bindings = <
-&trans  &trans       &trans  &trans   &trans   &trans                           &trans     &trans     &trans    &trans     &trans        &trans
-&trans  &none        &kp F1  &kp F2   &kp F3   &kp F4                           &none      &kp PG_UP  &kp UP    &none      &kp HOME      &trans
-&trans  &kp TAB      &kp F5  &kp F6   &kp F7   &kp F8   &trans  &trans          &kp HOME   &kp LEFT   &kp DOWN  &kp RIGHT  &kp JP_UNDER  &trans
-&trans  &kp LS(TAB)  &kp F9  &kp F10  &kp F11  &kp F12  &trans  &kp LEFT_ARROW  &kp RIGHT  &kp PG_DN  &kp END   &none      &kp JP_PIPE   &trans
-&trans  &trans       &trans  &trans   &trans   &trans   &trans  &trans          &trans     &trans     &trans    &trans     &trans        &trans
+&trans  &trans       &trans  &trans   &trans   &trans                                &trans     &trans     &trans    &trans        &trans        &trans
+&trans  &none        &kp F1  &kp F2   &kp F3   &kp F4                                &none      &kp PG_UP  &kp UP    &none         &kp HOME      &trans
+&trans  &kp TAB      &kp F5  &kp F6   &kp F7   &kp F8   &trans        &trans         &kp HOME   &kp LEFT   &kp DOWN  &kp RIGHT     &kp JP_UNDER  &trans
+&trans  &kp LS(TAB)  &kp F9  &kp F10  &kp F11  &kp F12  &trans        &kp LEFT_ARROW &kp RIGHT  &kp PG_DN  &kp END   &none         &kp JP_PIPE   &trans
+&trans  &trans       &trans  &trans   &trans   &trans   &trans        &trans         &trans     &trans     &trans    &trans        &trans        &trans
             >;
         };
 
+        // Layer 5
         BT_ctrl {
             bindings = <
-&trans  &trans      &trans        &trans        &trans        &trans                        &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &bt BT_NXT  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans        &trans        &trans        &trans                                &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &bt BT_NXT  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3                          &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &bt BT_PRV  &bt BT_SEL 4  &bt BT_SEL 5  &bt BT_SEL 6  &bt BT_SEL 7  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans        &bt BT_CLR    &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans        &trans        &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
 
+        // Layer 6
         shft_SYM {
             bindings = <
-&trans  &trans        &trans        &trans       &trans       &trans                           &trans              &trans       &trans        &trans        &trans        &trans
-&trans  &kp JP_TILDE  &kp JP_AT     &kp JP_LBRC  &kp JP_RBRC  &kp JP_SEMI                      &kp JP_CARET        &kp JP_AMPS  &kp JP_ASTRK  &kp JP_LPAR   &kp JP_CARET  &trans
-&trans  &kp JP_EXCL   &kp JP_SQT    &kp JP_LPAR  &kp JP_RPAR  &kp JP_COLON  &trans  &trans     &kp JP_PLUS         &kp JP_DLLR  &kp JP_PRCNT  &kp JP_CARET  &kp JP_UNDER  &trans
-&trans  &kp JP_CARET  &kp JP_GRAVE  &kp JP_LBKT  &kp JP_RBKT  &kp JP_BSLH   &trans  &kp KP_N0  &mt ENTER JP_EQUAL  &kp JP_EXCL  &kp JP_AT     &kp JP_HASH   &kp JP_PRCNT  &trans
-&trans  &trans        &trans        &trans       &trans       &trans        &trans  &trans     &kp BACKSPACE       &trans       &trans        &kp JP_TILDE  &kp JP_PIPE   &trans
+&trans  &trans        &trans        &trans        &trans       &trans                                           &trans              &trans         &trans        &trans        &trans        &trans
+&trans  &kp JP_TILDE  &kp JP_AT     &kp JP_LBRC   &kp JP_RBRC  &kp JP_SEMI                                      &kp JP_CARET        &kp JP_AMPS    &kp JP_ASTRK  &kp JP_LPAR   &kp JP_CARET  &trans
+&trans  &kp JP_EXCL   &kp JP_SQT    &kp JP_LPAR   &kp JP_RPAR  &kp JP_COLON  &trans     &trans     &kp JP_PLUS          &kp JP_DLLR    &kp JP_PRCNT  &kp JP_CARET  &kp JP_UNDER  &trans
+&trans  &kp JP_CARET  &kp JP_GRAVE  &kp JP_LBKT   &kp JP_RBKT  &kp JP_BSLH   &trans     &kp KP_N0  &mt ENTER JP_EQUAL   &kp JP_EXCL    &kp JP_AT     &kp JP_HASH   &kp JP_PRCNT  &trans
+&trans  &trans        &trans        &trans        &trans       &trans        &trans     &trans     &kp BACKSPACE        &trans         &trans        &kp JP_TILDE  &kp JP_PIPE   &trans
             >;
         };
 
+        // Layer 7
         scrollL {
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans       &trans           &trans  &trans  &trans
@@ -120,13 +165,14 @@
             >;
         };
 
-        tabChanger {
+        // Layer 8 (nav_layer)
+        nav_layer {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans       &trans       &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &kp TAB      &kp LS(TAB)  &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &tab_next    &tab_prev    &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans       &trans       &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans       &trans       &trans     &trans  &trans
             >;
         };
     };
