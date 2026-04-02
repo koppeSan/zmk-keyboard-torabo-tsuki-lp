@@ -16,6 +16,22 @@
 };
 
 / {
+// ... 既存の macros や keymap など ...
+
+    // ==========================================
+    // Layer 7: トラボスクロール化リスナー (torabo-tsuki LP専用)
+    // ==========================================
+    trackball_scroll_listener {
+        compatible = "zmk,input-behavior-listener";
+        device = <&trackball>;
+        layers = <7>;                 // Layer 7がアクティブな時だけ発動
+        evt-type = <0x02>;            // INPUT_EV_REL (相対移動)
+        x-input-code = <0x00>;        // INPUT_REL_X (X軸)
+        y-input-code = <0x01>;        // INPUT_REL_Y (Y軸)
+        
+        // 移動量をマウスホイールの回転に変換（1/14に減速して滑らかにする）
+        bindings = <&ib_wheel_scaler 1 14>; 
+    };
     combos {
         compatible = "zmk,combos";
 
@@ -176,8 +192,4 @@
             >;
         };
     };
-};
-&trackball {
-    status = "okay";
-    scroll-layers = <7>;
 };
