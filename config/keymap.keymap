@@ -1,79 +1,20 @@
-// =========================================================================
-// ① ヘッダーファイルの読み込み
-// =========================================================================
 #include "unicode.h"
 #include "keycode_japanese.h"
-#include <input/processors.dtsi>       // ZMK標準のInput Processor（入力変換）機能
-#include <behaviors.dtsi>              // ホールドやタップなどのキー挙動機能
-#include <dt-bindings/zmk/bt.h>        // Bluetooth制御用のキーコード
-#include <dt-bindings/zmk/keys.h>      // 一般的なキーコード
-#include <dt-bindings/zmk/pointing.h>  // マウスクリックなどのポインティング用キーコード
-// ↓【追加】X軸（INPUT_REL_X）やホイールなどの入力イベントのコードを認識させるために必須
-#include <zephyr/dt-bindings/input/input-event-codes.h> 
+#include <input/processors.dtsi>
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/pointing.h>
 
-// =========================================================================
-// ② マウスエミュレーション（移動・スクロール）の基本設定
-// =========================================================================
-&mmv { }; // カーソル移動（Mouse Move）の設定（今回はデフォルト）
+&mmv { };
 
 &msc {
-    // スクロール（Mouse Scroll）の動作感の調整
-    acceleration-exponent = <1>; // 加速度の強さ（1は一定加速度）
-    time-to-max-speed-ms = <400>; // 最高速度に達するまでの時間（ミリ秒）
-    delay-ms = <0>; // 入力してから動き出すまでの遅延
-};
-
-// =========================================================================
-// ③ トラックボールの入力を監視・加工するリスナー（🌟今回の最重要部分）
-// ここに並べた input-processors が「上から順番に」実行されます。
-// =========================================================================
-&trackball_listener {
-    input-processors = 
-        // 処理1: レイヤー7の時だけ、横方向(X軸)の動きを 0倍(無効化) にする
-        // これがないと、上下に転がした時に横スクロールも混ざってしまいます。
-        <&layer7_x_zero 0 1>,
-
-        // 処理2: レイヤー7の時だけ、残った動き(Y軸)をスクロールに変換する
-        // 処理1を通過したY軸の動きだけがここで変換され、縦スクロールになります。
-        <&layer7_scroll>,
-
-        // 処理3: ボールが動いたら、Layer 1（マウスレイヤー）を10000ミリ秒(10秒間)有効にする
-        // これが「オートマウスレイヤー（AML）」の本体です。
-        // Layer 7以外では処理1と2が無視されるため、通常時はこれだけが発動します。
-        // Layer 7の時も、処理1と2で「process-next」を指定しているため、ここまで到達してAMLが維持されます。
-        <&zip_temp_layer 1 10000>;
+    acceleration-exponent = <1>;
+    time-to-max-speed-ms = <400>;
+    delay-ms = <0>;
 };
 
 / {
-    // =====================================================================
-    // ④ カスタム Input Processor の定義（オリジナルルールの作成）
-    // =====================================================================
-
-    // ルールA：レイヤー7専用の「横移動を無効化する」プロセッサ
-    layer7_x_zero: layer7_x_zero {
-        compatible = "zmk,input-processor-scaler"; // 数値を拡大/縮小する機能を使用
-        #input-processor-cells = <2>;
-        type = <INPUT_EV_REL>; // カーソル移動などの「相対移動イベント」を対象
-        codes = <INPUT_REL_X>; // X軸（左右の動き）のみを対象とする
-        layers = <7>;          // ★Layer 7が有効な時だけ発動させる
-        process-next;          // ★【重要】処理をここで止めず、次のスクロール変換へ引き継ぐ
-    };
-
-    // ルールB：レイヤー7専用の「カーソル移動をスクロールに変換する」プロセッサ
-    layer7_scroll: layer7_scroll {
-        compatible = "zmk,input-processor-code-mapper"; // 別の入力イベントに変換する機能を使用
-        #input-processor-cells = <0>;
-        type = <INPUT_EV_REL>; 
-        // X軸を横ホイールに、Y軸を縦ホイールに変換するという指定
-        // （直前のルールAでX軸は0にされているため、実質Y軸＝縦ホイールだけが発動します）
-        map = <INPUT_REL_X INPUT_REL_HWHEEL>, <INPUT_REL_Y INPUT_REL_WHEEL>;
-        layers = <7>;          // ★Layer 7が有効な時だけ発動させる
-        process-next;          // ★【重要】処理をここで止めず、次のAML更新へ引き継ぐ
-    };
-
-    // =====================================================================
-    // ⑤ 既存のコンボ、マクロ、ビヘイビアの設定
-    // =====================================================================
     combos {
         compatible = "zmk,combos";
         bt_clear {
@@ -106,7 +47,9 @@
         };
     };
 
+    // ==========================================
     // カスタム挙動の定義部屋（単打と長押しの分岐）
+    // ==========================================
     behaviors {
         ht_l_nav: hold_tap_l_nav {
             compatible = "zmk,behavior-hold-tap";
@@ -117,13 +60,10 @@
         };
     };
 
-    // =====================================================================
-    // ⑥ キーマップ本体
-    // =====================================================================
     keymap {
         compatible = "zmk,keymap";
 
-        // Layer 0 default (基本となるレイヤー)
+        // Layer 0 default
         default {
             bindings = <
                 &none &none &none &none &none &none &none &none &none &none &none &none &none &mt ESC Q 
@@ -134,11 +74,10 @@
             >;
         };
 
-        // Layer 1 Mouse (オートマウス機能で自動的に切り替わるレイヤー)
+        // Layer 1 Mouse
         Mouse {
             bindings = <
                 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &kp C_NEXT 
-                // ここにある「&mo 7」を押している間はLayer 7（スクロールレイヤー）になります
                 &none &kp C_BRI_DEC &kp C_BRI_AUTO &kp C_BRIGHTNESS_INC &mo 7 &msc SCRL_LEFT &msc SCRL_UP &msc SCRL_RIGHT &mt HOME PAGE_UP &trans &trans &kp C_PLAY_PAUSE &none &none &kp C_AL_SELECT_TASK &none 
                 &trans &trans &mkp MCLK &mkp LCLK &mkp RCLK &mkp MB3 &mt END PAGE_DOWN &trans &trans &kp C_PREVIOUS &none &kp C_VOL_DN &kp K_MUTE &kp C_VOLUME_UP &trans &to 0 
                 &mkp MB5 &mkp MB4 &msc SCRL_DOWN &kp RIGHT &trans &trans &trans &mt LEFT_SHIFT C_AL_TASK_MANAGER &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
@@ -196,7 +135,7 @@
             >;
         };
 
-        // Layer 7 scrollL (縦スクロールを有効にするためのレイヤー)
+        // Layer 7 scrollL
         scrollL {
             bindings = <
                 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans 
@@ -206,7 +145,7 @@
             >;
         };
 
-        // Layer 8 (nav_layer)
+        // Layer 8 (nav_layer) nav_layer
         nav_layer {
             bindings = <
                 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans 
@@ -217,4 +156,3 @@
         };
     };
 };
-```
