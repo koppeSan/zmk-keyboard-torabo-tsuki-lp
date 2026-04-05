@@ -114,6 +114,7 @@
         scroller {
             layers = <7>;
             input-processors = <
+                &zip_x_scaler 0 1   // x方向の動きを0倍にして消す
                 &zip_xy_to_scroll_mapper
                 &zip_scroll_transform INPUT_TRANSFORM_Y_INVERT
             >;
