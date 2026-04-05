@@ -40,7 +40,8 @@
                 <&macro_pause_for_release>,
                 <&macro_release>,
                 <&mo 8 &kp LALT>;
- // Lキーを離したら、Layer 8とLALTを解放
+
+            // Lキーを離したら、Layer 8とLALTを解放
         };
 
         // Jキー（Ctrl+Tab）用マクロ：Altが干渉しないように一時的に解放する
@@ -53,7 +54,8 @@
                 <&kp LALT &kp LC(TAB)>,
                 <&macro_press>,
                 <&kp LALT>;
-   // 再びAltを押し直す
+
+            // 再びAltを押し直す
         };
 
         // Kキー（Ctrl+Shift+Tab）用マクロ
@@ -93,7 +95,7 @@
 &none  &none       &none        &none             &none         &none                                                &none            &none  &none         &none                &none                  &none
 &none  &mt ESC Q   &kp W        &kp E             &kp R         &kp T                                                &kp Y            &kp U  &kp I         &kp O                &kp P                  &none
 &none  &kp A       &kp S        &kp D             &kp F         &kp G                &none              &none        &kp H            &kp J  &kp K         &kp L                &lt 7 JP_MINUS         &none
-&none  &kp Z       &kp X        &kp C             &kp V         &kp B                &lt 5 PRINTSCREEN  &to 1        &kp N            &kp M  &kp JP_COMMA  &kp JP_DOT           &lt 1 JP_SLASH         &none
+&none  &kp Z       &kp X        &kp C             &kp V         &kp B                &lt 5 PRINTSCREEN  &lt 8 INT5   &kp N            &kp M  &kp JP_COMMA  &kp JP_DOT           &lt 1 JP_SLASH         &none
 &none  &lt 2 INT5  &lt 4 JP_AT  &mt LALT JP_ZKHK  &kp LEFT_GUI  &mt LEFT_SHIFT INT4  &mt LCTRL SPACE    &lt 4 ENTER  &lt 3 BACKSPACE  &none  &none         &mt ESCAPE JP_CARET  &mt RIGHT_ALT JP_SEMI  &none
             >;
         };
