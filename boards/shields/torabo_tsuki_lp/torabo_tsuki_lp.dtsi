@@ -100,16 +100,6 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* 通常モード (レイヤー0) */
-        default_mode {
-            layers = <0>;
-            input-processors = <
-                // &zip_xy_to_scroll_mapper //テスト用こーど
-                &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
-                &custom_aml 1 500
-            >;
-        };
-
         /* スクロールモード (レイヤー7) */
         scroller {
             layers = <7>;
@@ -117,6 +107,15 @@
                 &zip_x_scaler 0 1   // x方向の動きを0倍にして消す
                 &zip_xy_to_scroll_mapper
                 &zip_scroll_transform INPUT_TRANSFORM_Y_INVERT
+            >;
+        };
+        /* 通常モード (レイヤー0) */
+        default_mode {
+            layers = <0>;
+            input-processors = <
+                // &zip_xy_to_scroll_mapper //テスト用こーど
+                &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+                &custom_aml 1 500
             >;
         };
     };
