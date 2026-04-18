@@ -42,16 +42,6 @@
     // カスタム挙動の定義部屋（単打と長押しの分岐）
     // ==========================================
 
-    behaviors {
-        ht_l_nav: hold_tap_l_nav {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "tap-preferred"; // タップ（単打）を優先
-            tapping-term-ms = <200>; // 200ms長押しでマクロ発動
-            bindings = <&l_nav>, <&kp>;
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
