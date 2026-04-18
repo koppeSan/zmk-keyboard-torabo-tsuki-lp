@@ -34,47 +34,8 @@
 
     macros {
         // Lキー専用マクロ：レイヤー8への切り替えとAlt保持を同時に行う
-
-        l_nav: l_nav {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <0>;
-            bindings =
-                <&macro_press>,
-                <&mo 8 &kp LALT>,
-                <&macro_pause_for_release>,
-                <&macro_release>,
-                <&mo 8 &kp LALT>;
-
-            // Lキーを離したら、Layer 8とLALTを解放
-        };
-
         // Jキー（Ctrl+Tab）用マクロ：Altが干渉しないように一時的に解放する
-
-        tab_next: tab_next {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_release>,
-                <&kp LALT &kp LC(TAB)>,
-                <&macro_press>,
-                <&kp LALT>;
-
-            // 再びAltを押し直す
-        };
-
         // Kキー（Ctrl+Shift+Tab）用マクロ
-
-        tab_prev: tab_prev {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_release>,
-                <&kp LALT &kp LC(LS(TAB))>,
-                <&macro_press>,
-                <&kp LALT>;
-        };
     };
 
     // ==========================================
