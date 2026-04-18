@@ -24,6 +24,12 @@
             key-positions = <57 41>;
             layers = <5>;
         };
+
+        BStoDel {
+            bindings = <&kp DELETE>;
+            key-positions = <57 60>;
+            layers = <0>;
+        };
     };
 
     macros {
@@ -104,11 +110,11 @@
 
         Mouse {
             bindings = <
-&trans  &trans                            &trans  &trans         &trans                &trans                                &trans     &trans          &trans          &trans           &trans            &trans
-&trans  &kp C_NEXT                        &none   &kp C_BRI_DEC  &kp C_BRI_AUTO        &kp C_BRIGHTNESS_INC                  &mo 7      &msc SCRL_LEFT  &msc SCRL_UP    &msc SCRL_RIGHT  &mt HOME PAGE_UP  &trans
-&trans  &kp C_PLAY_PAUSE                  &none   &none          &kp C_AL_SELECT_TASK  &none                 &trans  &trans  &mkp MCLK  &mkp LCLK       &mkp RCLK       &mkp MB3         &lt 7 END         &trans
-&trans  &kp C_PREVIOUS                    &none   &kp C_VOL_DN   &kp K_MUTE            &kp C_VOLUME_UP       &trans  &to 0   &mkp MB5   &mkp MB4        &msc SCRL_DOWN  &kp RIGHT        &trans            &trans
-&trans  &mt LEFT_SHIFT C_AL_TASK_MANAGER  &trans  &trans         &trans                &trans                &trans  &trans  &trans     &trans          &trans          &trans           &trans            &trans
+&trans  &trans                            &trans  &trans         &trans                &trans                                &trans     &trans          &trans          &trans           &trans                 &trans
+&trans  &kp C_NEXT                        &none   &kp C_BRI_DEC  &kp C_BRI_AUTO        &kp C_BRIGHTNESS_INC                  &mo 7      &msc SCRL_LEFT  &msc SCRL_UP    &msc SCRL_RIGHT  &mt HOME LC(PAGE_UP)   &trans
+&trans  &kp C_PLAY_PAUSE                  &none   &none          &kp C_AL_SELECT_TASK  &none                 &trans  &trans  &mkp MCLK  &mkp LCLK       &mkp RCLK       &mkp MB3         &mt END LC(PAGE_DOWN)  &trans
+&trans  &kp C_PREVIOUS                    &none   &kp C_VOL_DN   &kp K_MUTE            &kp C_VOLUME_UP       &trans  &none   &none      &kp PAGE_DOWN   &msc SCRL_DOWN  &kp PAGE_UP      &trans                 &trans
+&trans  &mt LEFT_SHIFT C_AL_TASK_MANAGER  &trans  &trans         &trans                &trans                &trans  &none   &mkp MB4   &trans          &trans          &trans           &trans                 &trans
             >;
 
             label = "mouse";
