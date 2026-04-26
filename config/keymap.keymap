@@ -62,8 +62,8 @@
         Mouse {
             bindings = <
 &trans  &trans                            &trans  &trans         &trans                &trans                                &trans     &trans          &trans          &trans           &trans                 &trans
-&trans  &kp C_NEXT                        &none   &kp C_BRI_DEC  &kp C_BRI_AUTO        &kp C_BRIGHTNESS_INC                  &mo 7      &msc SCRL_LEFT  &msc SCRL_UP    &msc SCRL_RIGHT  &mt HOME LC(PAGE_UP)   &trans
-&trans  &kp C_PLAY_PAUSE                  &none   &none          &kp C_AL_SELECT_TASK  &none                 &trans  &trans  &mkp MCLK  &mkp LCLK       &mkp RCLK       &mkp MB3         &mt END LC(PAGE_DOWN)  &trans
+&trans  &kp C_NEXT                        &none   &kp C_BRI_DEC  &kp C_BRI_AUTO        &kp C_BRIGHTNESS_INC                  &mkp MCLK  &msc SCRL_LEFT  &msc SCRL_UP    &msc SCRL_RIGHT  &mt HOME LC(PAGE_UP)   &trans
+&trans  &kp C_PLAY_PAUSE                  &none   &none          &kp C_AL_SELECT_TASK  &none                 &trans  &trans  &mo 7      &mkp LCLK       &mkp RCLK       &mkp MB3         &mt END LC(PAGE_DOWN)  &trans
 &trans  &kp C_PREVIOUS                    &none   &kp C_VOL_DN   &kp K_MUTE            &kp C_VOLUME_UP       &trans  &trans  &trans     &kp PAGE_DOWN   &msc SCRL_DOWN  &kp PAGE_UP      &trans                 &trans
 &trans  &mt LEFT_SHIFT C_AL_TASK_MANAGER  &trans  &trans         &trans                &trans                &trans  &trans  &trans     &trans          &trans          &trans           &mkp MB4               &trans
             >;
@@ -139,7 +139,7 @@
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &kp LA(TAB)  &kp LS(LA(TAB))  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &kp LC(TAB)  &kp LC(LS(TAB))  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans       &trans           &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &to 8   &trans  &trans  &trans  &trans       &trans           &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &mo 8   &trans  &trans  &trans  &trans       &trans           &trans  &trans  &trans
             >;
         };
 
