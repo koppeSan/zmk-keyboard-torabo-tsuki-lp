@@ -42,6 +42,37 @@
     // カスタム挙動の定義部屋（単打と長押しの分岐）
     // ==========================================
 
+    behaviors {
+        Mod_LALT_AtoTab: Mod_LALT_AtoTab {
+            compatible = "zmk,behavior-mod-morph";
+            label = "MOD_LALT_ATOTAB";
+            bindings = <&kp A>, <&kp TAB>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LALT)>;
+            keep-mods = <(MOD_LALT)>;
+        };
+
+        ModLALT_ZtoShiftTab: ModLALT_ZtoShiftTab {
+            compatible = "zmk,behavior-mod-morph";
+            label = "MODLALT_ZTOSHIFTTAB";
+            bindings = <&kp Z>, <&kp LS(TAB)>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LALT)>;
+            keep-mods = <(MOD_LALT)>;
+        };
+
+        ModLSHIFT_BStoDEL: ModLSHIFT_BStoDEL {
+            compatible = "zmk,behavior-mod-morph";
+            label = "MODLSHIFT_BSTODEL";
+            bindings = <&kp BACKSPACE>, <&kp DELETE>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT)>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -49,11 +80,11 @@
 
         default {
             bindings = <
-&none  &none       &none        &none             &none         &none                                                &none            &none  &none         &none                &none                  &none
-&none  &mt ESC Q   &kp W        &kp E             &kp R         &kp T                                                &kp Y            &kp U  &kp I         &kp O                &kp P                  &none
-&none  &kp A       &kp S        &kp D             &kp F         &kp G                &none              &none        &kp H            &kp J  &kp K         &kp L                &lt 7 JP_MINUS         &none
-&none  &kp Z       &kp X        &kp C             &kp V         &kp B                &lt 5 PRINTSCREEN  &lt 8 INT5   &kp N            &kp M  &kp JP_COMMA  &kp JP_DOT           &lt 1 JP_SLASH         &none
-&none  &lt 2 INT5  &lt 4 JP_AT  &mt LALT JP_ZKHK  &kp LEFT_GUI  &mt LEFT_SHIFT INT4  &mt LCTRL SPACE    &lt 4 ENTER  &lt 3 BACKSPACE  &none  &none         &mt ESCAPE JP_CARET  &mt RIGHT_ALT JP_SEMI  &none
+&none  &none      &none        &none             &none         &none                                                &none            &none  &none         &none                &none                  &none
+&none  &mt ESC Q  &kp W        &kp E             &kp R         &kp T                                                &kp Y            &kp U  &kp I         &kp O                &kp P                  &none
+&none  &kp A      &kp S        &kp D             &kp F         &kp G                &none              &none        &kp H            &kp J  &kp K         &kp L                &lt 7 JP_MINUS         &none
+&none  &kp Z      &kp X        &kp C             &kp V         &kp B                &lt 5 PRINTSCREEN  &lt 8 INT5   &kp N            &kp M  &kp JP_COMMA  &kp JP_DOT           &lt 1 JP_SLASH         &none
+&none  &kp LCMD   &lt 2 JP_AT  &mt LALT JP_ZKHK  &kp LEFT_ALT  &mt LEFT_SHIFT INT4  &mt LCTRL SPACE    &lt 4 ENTER  &lt 3 BACKSPACE  &none  &none         &mt ESCAPE JP_CARET  &mt RIGHT_ALT JP_SEMI  &none
             >;
         };
 
