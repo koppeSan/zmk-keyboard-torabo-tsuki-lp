@@ -46,7 +46,7 @@
         Mod_LALT_AtoTab: Mod_LALT_AtoTab {
             compatible = "zmk,behavior-mod-morph";
             label = "MOD_LALT_ATOTAB";
-            bindings = <&kp A>, <&kp TAB>;
+            bindings = <&kp A>, <&kp LA(TAB)>;
 
             #binding-cells = <0>;
             mods = <(MOD_LALT)>;
@@ -56,7 +56,7 @@
         ModLALT_ZtoShiftTab: ModLALT_ZtoShiftTab {
             compatible = "zmk,behavior-mod-morph";
             label = "MODLALT_ZTOSHIFTTAB";
-            bindings = <&kp Z>, <&kp LS(TAB)>;
+            bindings = <&kp Z>, <&kp LS(LA(TAB))>;
 
             #binding-cells = <0>;
             mods = <(MOD_LALT)>;
